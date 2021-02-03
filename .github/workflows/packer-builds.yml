@@ -18,7 +18,7 @@ jobs:
         PKR_VAR_docker_login_username: "${{ secrets.DOCKER_HUB_USERNAME }}"
         PKR_VAR_docker_login_password: "${{ secrets.DOCKER_HUB_SECRET }}"
       run: |
-        set -x
+        set -e
         packer --version
         docker --version
         ansible --version | head -n 1
