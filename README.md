@@ -1,4 +1,7 @@
 # UBUNTU BASE CONTAINER IMAGE
+![Packer Builds](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-ubuntu/workflows/Packer%Builds/badge.svg)
+
+![Packer Builds](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-ubuntu/workflows/.github/workflows/packer-builds.yml/badge.svg)
 
 Ubuntu base image, with packages installed for use with building images using packer/ansible
 This is meant to be used as a building-block for other containers
@@ -22,5 +25,5 @@ docker run --rm -it local/ubuntu:2004 show this text
 docker run --rm -it local/ubuntu:2004 cmd whoami
 docker run -e GOSU=true --rm -it local/ubuntu:2004 cmd whoami
 docker run -e GOSU=true -e GOSU_USER=demo --rm -it local/ubuntu:2004 cmd whoami
-docker run -e GOSU=true -e GOSU_USER=rune --rm -it local/ubuntu:2004 cmd bash
+docker run -e GOSU=true -e GOSU_USER=demo --rm -it local/ubuntu:2004 cmd bash
 ```
