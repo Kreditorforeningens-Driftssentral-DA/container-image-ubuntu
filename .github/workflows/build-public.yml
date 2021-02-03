@@ -1,0 +1,31 @@
+# https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions
+# NOTE: Packer, Anisble & Docker is installed by default on GitHub ubuntu runners
+---
+name: build-private
+
+# Only manual runs
+on: [workflow_dispatch]
+
+jobs:
+  packer-ubuntu-2004:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - shell: bash
+      env:
+        PKR_VAR_docker_image_name: "kdsda/ubuntu-base"
+        #PKR_VAR_docker_image_tags: "[\"2004\", \"focal\", \"latest\"]"
+        PKR_VAR_docker_login_username: "${{ secrets.DOCKER_HUB_USERNAME }}"
+        PKR_VAR_docker_login_password: "${{ secrets.DOCKER_HUB_SECRET }}"
+        PKR_VAR_docker_login_server: "registry.hub.docker.com"
+      run: |
+        set -x
+        packer --version
+        docker --version
+        ansible --version | head -n 1
+        pushd src/packer
+        packer validate .
+        packer fmt -diff -write=false .
+        packer build .
+        popd
+...
