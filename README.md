@@ -1,7 +1,5 @@
 # UBUNTU BASE CONTAINER IMAGE
-![Packer Builds](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-ubuntu/workflows/Packer%Builds/badge.svg)
-
-![Packer Builds](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-ubuntu/workflows/.github/workflows/packer-builds.yml/badge.svg)
+![Packer Builds](https://github.com/Kreditorforeningens-Driftssentral-DA/container-image-ubuntu/workflows/Packer%20Builds/badge.svg?branch=main)
 
 Ubuntu base image, with packages installed for use with building images using packer/ansible
 This is meant to be used as a building-block for other containers
