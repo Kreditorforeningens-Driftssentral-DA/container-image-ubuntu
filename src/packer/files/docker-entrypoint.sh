@@ -10,14 +10,28 @@ set -e
 printf "Image: $(cat /etc/issue.net)\n"
 
 # VALIDATE CONTAINER CMD
-if [ "${1}" = 'cmd' ]; then
-  shift
-  set -- bash -c "${@}"
-elif [ "${1}" = 'show' ]; then
-  set -- echo "Your command: ${@}"
-else
-  set -- echo "Valid inputs are: cmd, show"
-fi
+case "${1}" in
+  'hello')
+    set -- echo "Hello!"
+    ;;
+
+  'show')
+    set -- echo "Your command(s): ${@}"
+    ;;
+
+  'cmd')
+    shift
+    ;;
+
+  *)
+    printf "\nValid inputs:\n"
+    printf "  hello  -> (default) Says hello\n"
+    printf "  show * -> Prints your input to stdout\n\n"
+    printf "  cmd    -> Runs command in bash\n\n"
+    printf "Any other command will print this message\n"
+    exit 0
+   ;;
+esac
 
 # CHECK ENVIRONMENT VARIABLES
 if [ -z ${GOSU} ]; then

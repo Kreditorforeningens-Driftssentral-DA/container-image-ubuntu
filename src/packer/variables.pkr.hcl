@@ -1,3 +1,8 @@
+variable build_date {
+  type    = string
+  default = "2021-01-01"
+}
+
 variable docker_image_name {
   type    = string
   default = "local/ubuntu"
@@ -10,7 +15,7 @@ variable docker_image_tags {
 
 variable docker_login_username {
   type    = string
-  default = "anonymous"
+  default = ""
 }
 
 variable docker_login_password {
@@ -25,5 +30,8 @@ variable docker_login_server {
 
 variable dockerfile_changes {
   type    = list(string)
-  default = ["ENTRYPOINT [\"/usr/bin/tini\", \"--\", \"/docker-entrypoint.sh\"]"]
+  default = [
+    "ENTRYPOINT [\"/usr/bin/tini\", \"--\", \"/docker-entrypoint.sh\"]",
+    "CMD [\"hello\"]"
+  ]
 }

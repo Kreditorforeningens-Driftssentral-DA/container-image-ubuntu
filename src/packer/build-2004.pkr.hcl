@@ -1,11 +1,9 @@
 build {
-  sources = [
-    "source.docker.UBUNTU_2004",
-  ]
+  sources = ["source.docker.UBUNTU_2004"]
 
   # ADD EXAMPLE ENTRYPOINT FILE
   provisioner "file" {
-    source      = "docker-entrypoint.sh"
+    source      = "files/docker-entrypoint.sh"
     destination = "/docker-entrypoint.sh"
   }
 
@@ -14,12 +12,13 @@ build {
     environment_vars = ["DEBIAN_FRONTEND=noninteractive"]
     inline = [
       "set -e",
-      "chmod +x /docker-entrypoint.sh",
+      "echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections",
       "apt-get -qqy update",
       "apt-get -qqy install --no-install-recommends dialog apt-utils",
       "apt-get -qqy upgrade",
       "apt-get -qqy install --no-install-recommends tini gosu python3-minimal python3-apt unzip curl jq gnupg2",
       "apt-get -qqy clean",
+      "chmod +x /docker-entrypoint.sh",
     ]
   }
 
@@ -27,8 +26,8 @@ build {
   post-processors {
     post-processor "docker-tag" {
       only       = ["docker.UBUNTU_2004"]
+      tags       = [var.build_date,"20.04", "focal", "latest"]
       repository = var.docker_image_name
-      tags       = ["2004", "focal", "latest"]
     }
 
     post-processor "docker-push" {

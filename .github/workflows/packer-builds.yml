@@ -4,28 +4,38 @@
 name: Packer Builds
 
 # Only manual runs
-on: [workflow_dispatch]
+#on: [workflow_dispatch]
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: '0 0 * * 3' # https://crontab.guru/
 
 jobs:
   public-docker-hub:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - shell: bash
+    - name: Create tag from current date
+      id: tag
+      shell: bash
+      run: echo "::set-output name=week::$(date +'%Y.%V')"
+    - name: Packer commands
+      shell: bash
       env:
+        PKR_VAR_build_date: "${{ steps.tag.outputs.week }}"
         PKR_VAR_docker_image_name: "registry.hub.docker.com/kdsda/ubuntu-base"
         PKR_VAR_docker_login_server: "registry.hub.docker.com"
         PKR_VAR_docker_login_username: "${{ secrets.DOCKER_HUB_USERNAME }}"
         PKR_VAR_docker_login_password: "${{ secrets.DOCKER_HUB_SECRET }}"
       run: |
-        # Build image & publish to DockerHub
+        # [UBUNTU] BUILD & PUSH TO DOCKER HUB
         set -e
-        packer --version
+        packer version
         docker --version
         ansible --version | head -n 1
         pushd src/packer
-        packer validate .
         packer fmt -diff -write=false .
+        packer validate .
         packer build .
         popd
 ...
